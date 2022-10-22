@@ -94,3 +94,16 @@ section{
 .equipment{
     transform: scale(0.6);
 }
+
+.items{
+    & img{
+        max-height: 50px;
+    }
+}
+
+.goback{
+    position: fixed;
+    z-index: 123123;
+    top: 20%;
+    color: white;
+}

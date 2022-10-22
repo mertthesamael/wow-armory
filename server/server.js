@@ -8,8 +8,8 @@ app.use(cors())
 
 app.get("/api", (req,res) => {
 
-    const { charName:name, method,region } = req.query
-
+    const { charName:name, method,region,realm } = req.query
+  
     var options = {
         method: 'POST',
         url: 'https://oauth.battle.net/token',
@@ -18,14 +18,14 @@ app.get("/api", (req,res) => {
           client_id: process.env.REACT_APP_BNET_ID,
           client_secret: process.env.REACT_APP_BNET_SECRET,
         })
-      };
-      
+      }; 
+       
       axios.request(options).then((response) => {
   
-       axios(`https://${region}.api.blizzard.com/profile/wow/character/draenor/${name}/${method}?namespace=profile-${region}&locale=en_US&access_token=${response.data.access_token}`).then(response => {
-
-        res.json({'data':response.data})
-      
+       axios(`https://${region}.api.blizzard.com/profile/wow/character/${realm}/${name}/${method}?namespace=profile-${region}&locale=en_US&access_token=${response.data.access_token}`).then(response => {
+ 
+        res.send(response.data)
+        
        })
 
        
@@ -35,5 +35,33 @@ app.get("/api", (req,res) => {
     });
 })
 
+app.get("/data", (req,res) => {
+
+  const { charName:name, method,region,realm, src } = req.query
+
+  var options = {
+      method: 'POST',
+      url: 'https://oauth.battle.net/token',
+      data: new URLSearchParams({
+        grant_type: 'client_credentials',
+        client_id: process.env.REACT_APP_BNET_ID,
+        client_secret: process.env.REACT_APP_BNET_SECRET,
+      })
+    };
+   
+    axios.request(options).then((response) => {
+
+     axios(`https://${region}.api.blizzard.com/data/wow/media/item/${src}?namespace=static-${region}&access_token=${response.data.access_token}`).then(response => {
+  
+      return res.send(response.data.assets[0].value)
+     
+     })
+
+     
+     
+  }).catch(function (error) {
+      console.error(error);
+  });
+})
 
 app.listen(5000, () =>{console.log("Server started on port 5000")})

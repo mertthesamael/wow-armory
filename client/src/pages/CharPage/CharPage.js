@@ -1,34 +1,48 @@
 import { useContext, useEffect, useState } from "react"
 import Sidebar from "../../components/Sidebar/Sidebar"
-import { useGetProfile } from "../../hooks/useGetProfile"
 import { DataContext } from "../../store/context"
 import "./charpage.scss"
 import Alliance from "../../assets/4614381.jpg"
 import Horde from "../../assets/5271737.jpg"
 import axios from "axios"
+import { useGetApi } from "../../hooks/useGetApi"
+import Loading from "../../assets/loading-svgrepo-com.svg"
+import { NavLink } from "react-router-dom"
 
 const CharPage = () => {
+  
     const ctx = useContext(DataContext)
-    const {data:player, isLoading:playerLoading} = useGetProfile(ctx.token,ctx.name,ctx.region,ctx.realm,'appearance')
-    const {data:equip, isLoading:itemsLoading} = useGetProfile(ctx.token,ctx.name,ctx.region,ctx.realm,'equipment')
-    const {data:media, isLoading} = useGetProfile(ctx.token,ctx.name,ctx.region,ctx.realm,'character-media')
-    const {data:professions, isLoading:professionsLoading} = useGetProfile(ctx.token,ctx.name,ctx.region,ctx.realm,'professions')
-    const {data:statics, isLoading:staticsLoading} = useGetProfile(ctx.token,ctx.name,ctx.region,ctx.realm,'statistics')
-    const {data:ach, isLoading:achLoading} = useGetProfile(ctx.token,ctx.name,ctx.region,ctx.realm,'achievements')
-  console.log(equip)
-    const getImg = async (src,type) => {
-      console.log(type, src)
-     return await axios(`https://eu.api.blizzard.com/data/wow/media/item/${src}?namespace=static-${ctx.region}`+'&access_token='+ctx.token).then(res => document.getElementById(type).setAttribute("src",res?.data?.assets[0].value)).then(res=> console.log(res))
+    const getImg = (src,type) => {
+      document.getElementById(type).setAttribute("src",Loading)
+      const options = {
+        method: 'GET',
+        url:'http://localhost:5000/data',
+        params:{
+          src:src,
+          region:ctx.region
+        }
+      }
+     
+     axios.request(options).then(res=> document.getElementById(type).setAttribute("src", res.data))
+  
       
     } 
   
-    console.log(equip)
- 
-   
-   
-   
     
+ const {data:equip, isLoading:equipLoading} = useGetApi('equipment', ctx.realm,ctx.name,ctx.region)
+ const {data:player, isLoading:playerLoading} = useGetApi('appearance', ctx.realm,ctx.name,ctx.region)
+ const {data:media, isLoading} = useGetApi('character-media', ctx.realm,ctx.name,ctx.region)
+ const {data:professions} = useGetApi('professions', ctx.realm,ctx.name,ctx.region)
+ const {data:ach, isLoading:achLoading} = useGetApi('achievements', ctx.realm,ctx.name,ctx.region)
+ const {data:stats, isLoading:statsLoading} = useGetApi('statistics', ctx.realm,ctx.name,ctx.region)
+
+
+ useEffect(()=>{
+  equip?.equipped_items.map(item => getImg(item.item.id, item.slot.type) )
   
+ },[player])
+ 
+ 
     const color = {
       RARE:'blue',
       HEIRLOOM:'yellow',
@@ -38,13 +52,15 @@ const CharPage = () => {
       LEGENDARY:"orange"
     }
 
-      if(isLoading || playerLoading || itemsLoading){
+      if(isLoading || playerLoading || equipLoading){
           return(
               <h1>Loading</h1>
           )
       }
+
     return (
       <div className="charpage">
+        <NavLink to='/' className="goback">GO TO HOME MK</NavLink>
         <Sidebar />
         <section className="section1">
           <div
@@ -57,31 +73,34 @@ const CharPage = () => {
           <div className="charpagebg3" />
           <div className="equipment">
             <h1>Equipment</h1>
-            {equip?.equipped_items.map((item) => (
-              <>
-               
+            {equip?.equipped_items.map((item) => 
+              
+           
+               <div className="items" key={item.name}>
+              
               <h1
-                style={
-                  color[item.quality.type] && {
-                    color: color[item.quality.type],
-                  }
+              style={
+                color[item.quality.type] && {
+                  color: color[item.quality.type],
                 }
-                >
-                {item.slot.name + " : " + item.name}
+              }
+              >
+              {item.slot.name + " : " + item.name}
               </h1>
-               
-                <img id={item.slot.type} src={getImg(item.media.id,item.slot.type)}/>
-                </>
-            ))}
-          </div>
-        </section>
-        <section>
+              
+              <img id={item.slot.type} />
+              </div>
+            
+              )}
+              </div>
+              </section>
+              <section>
               <div className="charpagebg3" style={{backgroundImage:`url(${media?.assets[2].value})`}}/>
-
+              
               <div className="professions">
                 <div className="professions__primary">
                   <h1>Primary Professions</h1>
-                 {professions?.primaries?.map(name => <div className="profession"><h1>{name.profession.name }</h1>{name.tiers.map(x=><h1>{x.tier.name + " : " + x.skill_points +"/"+ x.max_skill_points}</h1>)}</div>)}
+                 {professions?.primaries?.map(name => <div key={name.profession.name} className="profession"><h1>{name.profession.name }</h1>{name.tiers.map(x=><h1>{x.tier.name + " : " + x.skill_points +"/"+ x.max_skill_points}</h1>)}</div>)}
                 </div>
                 <div className="professions_ach">
                   <h1>Achievement Point:</h1>
@@ -90,7 +109,7 @@ const CharPage = () => {
                 <div className="professions__secondary">
                 <h1>Secondary Professions</h1>
 
-                {professions?.secondaries?.map(name => <div className="profession"><h1>{name.profession.name + ":" + (name.skill_points?name.skill_points:"") }</h1>{name.tiers?.map(x=><h1>{x.tier.name + " : " + x.skill_points +"/"+ x.max_skill_points}</h1>)}</div>)}
+                {professions?.secondaries?.map(name => <div key={name.profession.name} className="profession"><h1>{name.profession.name + ":" + (name.skill_points?name.skill_points:"") }</h1>{name.tiers?.map(x=><h1>{x.tier.name + " : " + x.skill_points +"/"+ x.max_skill_points}</h1>)}</div>)}
 
                 </div>
 

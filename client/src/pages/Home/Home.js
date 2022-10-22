@@ -1,7 +1,6 @@
 
 import { useContext, useEffect, useState } from "react";
 import { useNavigate, redirect } from "react-router-dom";
-import { useGetData } from "../../hooks/useGetData";
 import { DataContext } from "../../store/context";
 import axios from "axios"
 import "./home.scss"
@@ -11,7 +10,6 @@ import "./home.scss"
 const Home = (props) => {
     const navigate = useNavigate();
     const ctx = useContext(DataContext)
-    const {data} = useGetData(ctx.token,ctx.region)
  
 
     const formHandler = (e) => {
@@ -31,17 +29,7 @@ const Home = (props) => {
       return ctx.onSetRegion("eu")
 
     }
-    useEffect(() => {
-      const options = {
-        method: 'GET',
-        url:'http://localhost:5000/api',
-        params:{
-          charName:"evilmerto",
-          method:"equipment",
-          region:ctx.region}
-      }
-      axios.request(options).then(res=>console.log(res))
-    },[])
+ 
     return(
         <div className="home">
           <div className="homebg"/>

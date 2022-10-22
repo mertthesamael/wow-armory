@@ -11,8 +11,9 @@ export const DateContextWrapper = (props) => {
   const [realm, setRealm] = useState("draenor")
   const [region, setRegion] = useState("eu")
 
-  const [token, setToken] = useState()
 
+  const [token, setToken] = useState()
+  
   const nameHandler = (value) => {
       return setName(value)
   }
