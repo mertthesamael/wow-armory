@@ -1,0 +1,96 @@
+.charpage{
+    height: 100vh;
+    scroll-snap-type: y mandatory;
+    overflow: auto;
+    position: relative;
+    &bg{
+        width: 100vw;
+        height: 100vh;
+        position: absolute;
+        z-index: -1;
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center;
+        &::after {
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backdrop-filter: blur(10px); 
+            pointer-events: none; 
+          }
+      
+    }
+    &bg2{
+        width: 100vw;
+        height: 100vh;
+        background-image: url("../../assets/WoW-ForbiddenReach-1024x575.jpg");
+        position: absolute;
+        z-index: -1;
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center;
+        &::after {
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backdrop-filter: blur(10px); 
+            pointer-events: none; 
+          }
+    }
+    &bg3{
+        width: 100vw;
+        height: 100vh;
+        background-image: url("../../assets/1230595.jpg");
+        position: absolute;
+        z-index: -1;
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center;
+        &::after {
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backdrop-filter: blur(10px); 
+            pointer-events: none; 
+          }
+    }
+
+    &__charimage{
+        height: 100%;
+        & img{
+            height: 100%;
+        }
+    }
+
+
+
+}
+
+.professions{
+    width: 80%;
+    height: 50%;
+    display: flex;
+    justify-content: space-between;
+}
+//Sections
+section{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    scroll-snap-align: start;
+    height: 100vh;
+    color: white;
+}
+.section1{
+    position: relative;
+    color: white;
+    font-size: 80px;
+    z-index: 12321;
+}
+.equipment{
+    transform: scale(0.6);
+}
