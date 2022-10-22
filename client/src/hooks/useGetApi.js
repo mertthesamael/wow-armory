@@ -19,9 +19,9 @@ export const useGetApi = (method, realm, name, region) => {
     }
 
     return useQuery(["Data", method, realm, name, region] ,() => fetchData(method, realm, name, region),{
-        select: (data) => data.data,
-        staleTime: 0,
+        select: (data) => data.data.data,
+        staleTime: 1000,
         refetchOnWindowFocus: true,
-        refetchInterval: 0,
+        refetchInterval: 30000,
     })
 }

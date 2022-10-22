@@ -91,8 +91,17 @@ section{
     font-size: 80px;
     z-index: 12321;
 }
-.equipment{
-    transform: scale(0.6);
+.eqipments__section{
+    width: 100vw;
+    height: 100vh;
+    & .equipment{
+        height: 100%;
+        display: grid;
+        place-items: center;
+        grid-template-columns: repeat(3,1fr);
+     
+   
+    }
 }
 
 .items{

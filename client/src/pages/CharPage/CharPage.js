@@ -8,12 +8,13 @@ import axios from "axios"
 import { useGetApi } from "../../hooks/useGetApi"
 import Loading from "../../assets/loading-svgrepo-com.svg"
 import { NavLink } from "react-router-dom"
+import Equipment from "../../components/Equipment/Equipment"
 
 const CharPage = () => {
   
     const ctx = useContext(DataContext)
-    const getImg = (src,type) => {
-      document.getElementById(type).setAttribute("src",Loading)
+    const getImg = async (src,type) => {
+     await document.getElementById(type)?.setAttribute("src",Loading)
       const options = {
         method: 'GET',
         url:'http://localhost:5000/data',
@@ -23,7 +24,7 @@ const CharPage = () => {
         }
       }
      
-     axios.request(options).then(res=> document.getElementById(type).setAttribute("src", res.data))
+     await axios.request(options).then(res=> document.getElementById(type).setAttribute("src", res.data.data))
   
       
     } 
@@ -33,16 +34,16 @@ const CharPage = () => {
  const {data:player, isLoading:playerLoading} = useGetApi('appearance', ctx.realm,ctx.name,ctx.region)
  const {data:media, isLoading} = useGetApi('character-media', ctx.realm,ctx.name,ctx.region)
  const {data:professions} = useGetApi('professions', ctx.realm,ctx.name,ctx.region)
- const {data:ach, isLoading:achLoading} = useGetApi('achievements', ctx.realm,ctx.name,ctx.region)
+//  const {data:ach, isLoading:achLoading} = useGetApi('achievements', ctx.realm,ctx.name,ctx.region)
  const {data:stats, isLoading:statsLoading} = useGetApi('statistics', ctx.realm,ctx.name,ctx.region)
 
 
  useEffect(()=>{
-  equip?.equipped_items.map(item => getImg(item.item.id, item.slot.type) )
+  equip?.equipped_items.map(item => getImg(item.item.id, item.slot.type))
   
- },[player])
+ },[equip])
  
- 
+ console.log(equip)
     const color = {
       RARE:'blue',
       HEIRLOOM:'yellow',
@@ -60,7 +61,7 @@ const CharPage = () => {
 
     return (
       <div className="charpage">
-        <NavLink to='/' className="goback">GO TO HOME MK</NavLink>
+        <NavLink to='/' className="goback">HOME</NavLink>
         <Sidebar />
         <section className="section1">
           <div
@@ -69,43 +70,32 @@ const CharPage = () => {
           />
           <h1 className="charid">{player?.character.name}</h1>
         </section>
-        <section className="section3">
-          <div className="charpagebg3" />
+        <section className="eqipments__section">
+          <div className="charpagebg3" style={{backgroundImage:`url(${media?.assets[2].value})`}} />
+          
           <div className="equipment">
-            <h1>Equipment</h1>
             {equip?.equipped_items.map((item) => 
-              
            
-               <div className="items" key={item.name}>
+           <div className="items" key={item.name}>
+                 <Equipment id={item.slot.type} name={item.name} color={color[item.quality.type]}/>
               
-              <h1
-              style={
-                color[item.quality.type] && {
-                  color: color[item.quality.type],
-                }
-              }
-              >
-              {item.slot.name + " : " + item.name}
-              </h1>
-              
-              <img id={item.slot.type} />
               </div>
             
               )}
               </div>
               </section>
               <section>
-              <div className="charpagebg3" style={{backgroundImage:`url(${media?.assets[2].value})`}}/>
+              <div className="charpagebg3" />
               
               <div className="professions">
                 <div className="professions__primary">
                   <h1>Primary Professions</h1>
                  {professions?.primaries?.map(name => <div key={name.profession.name} className="profession"><h1>{name.profession.name }</h1>{name.tiers.map(x=><h1>{x.tier.name + " : " + x.skill_points +"/"+ x.max_skill_points}</h1>)}</div>)}
                 </div>
-                <div className="professions_ach">
+                {/* <div className="professions_ach">
                   <h1>Achievement Point:</h1>
                   <h1>{ach?.total_points}</h1>
-                </div>
+                </div> */}
                 <div className="professions__secondary">
                 <h1>Secondary Professions</h1>
 

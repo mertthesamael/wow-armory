@@ -1,0 +1,36 @@
+.equipmentitem{
+    min-width:30vw;
+    height: 6rem;
+    z-index: 123;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    background-color: rgba(255, 255, 255, 0.151);
+    border-radius: 15px;
+    position: relative;
+    transition: all 0.2s ease-in-out;
+    cursor: default;
+    transform: scale(0.7);
+   &:hover{
+    box-shadow: 0 0 20px 5px !important;
+    .equipmentitem__tooltip{
+       opacity: 1;
+    }
+   }
+   &__tooltip{
+    position: absolute;
+    width: 15rem;
+    height: 12rem;
+    transition: all 0.5s ease-in-out;
+    opacity: 0;
+    right: -13rem;
+    background-color: black;
+   }
+    &__img{
+        width: 20%;
+    }
+    &__name{
+        width: 100%;
+    }
+}
