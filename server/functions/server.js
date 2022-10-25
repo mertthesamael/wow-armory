@@ -1,9 +1,11 @@
 const express = require('express')
-const app = express()
 const axios = require("axios")
 const cors = require('cors')
 const dotenv = require('dotenv')
 const rateLimit = require('express-rate-limit')
+const serverless = require("serverless-http")
+const app = express()
+const router = express.Router()
 const limiter = rateLimit({
 	windowMs: 1 * 60 * 1000, // 15 minutes
 	max: 1000, // Limit each IP to 100 requests per `window` (here, per 15 minutes)
@@ -11,9 +13,10 @@ const limiter = rateLimit({
 	legacyHeaders: false, // Disable the `X-RateLimit-*` headers
 })
 dotenv.config()
+
 app.use(cors(), limiter)
 
-app.get("/api", (req,res) => {
+router.get("/api", (req,res) => {
 
     const { charName:name, method,region,realm } = req.query
 
@@ -42,7 +45,13 @@ app.get("/api", (req,res) => {
     });
 })
 
-app.get("/data", (req,res) => {
+router.get("/test", (req,res) => {
+res.json({
+  'hello':'test3'
+})
+
+})
+router.get("/data", (req,res) => {
 
   const { charName:name, method,region,realm, src } = req.query
 
@@ -68,5 +77,5 @@ app.get("/data", (req,res) => {
       console.error(error);
   });
 })
-
-app.listen(5000, () =>{console.log("Server started on port 5000")})
+app.use("/.netlify/functions/server", router)
+module.exports.handler = serverless(app)

@@ -8,7 +8,7 @@ export const useGetApi = (method, realm, name, region) => {
         
         const options = {
             method: 'GET',
-            url:'http://localhost:5000/api',
+            url:'https://bnet-api.netlify.app/.netlify/functions/server/api',
             params:{
               charName:name,
               realm:realm,

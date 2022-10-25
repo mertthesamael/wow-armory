@@ -9,6 +9,7 @@ import { useGetApi } from "../../hooks/useGetApi"
 import Loading from "../../assets/loading-svgrepo-com.svg"
 import { NavLink } from "react-router-dom"
 import Equipment from "../../components/Equipment/Equipment"
+import Carousel from "../../components/Carousel/Carousel"
 
 const CharPage = () => {
   
@@ -17,7 +18,7 @@ const CharPage = () => {
      await document.getElementById(type)?.setAttribute("src",Loading)
       const options = {
         method: 'GET',
-        url:'http://localhost:5000/data',
+        url:'https://6356c3960ff1726fd5c76b13--bnet-api.netlify.app/.netlify/functions/server/data',
         params:{
           src:src,
           region:ctx.region
@@ -45,12 +46,12 @@ const CharPage = () => {
  
  console.log(equip)
     const color = {
-      RARE:'blue',
-      HEIRLOOM:'yellow',
+      RARE:'#0070dd',
+      HEIRLOOM:'#00ccff',
       COMMON:'white',
-      UNCOMMON:"green",
-      EPIC:"purple",
-      LEGENDARY:"orange"
+      UNCOMMON:"#1eff00",
+      EPIC:"#a335ee",
+      LEGENDARY:"#ff8000"
     }
 
       if(isLoading || playerLoading || equipLoading){
@@ -74,15 +75,21 @@ const CharPage = () => {
           <div className="charpagebg3" style={{backgroundImage:`url(${media?.assets[2].value})`}} />
           
           <div className="equipment">
-            {equip?.equipped_items.map((item) => 
+          
+           {equip?.equipped_items.map((item) => 
            
-           <div className="items" key={item.name}>
-                 <Equipment id={item.slot.type} name={item.name} color={color[item.quality.type]}/>
-              
-              </div>
+                 <Equipment stats={item.stats} level={item.level.value} id={item.slot.type} name={item.name} color={color[item.quality.type]}/>
+           
             
               )}
               </div>
+              {/* <div className="stats">
+                <h1>Primary Stats</h1>
+                <h1>{stats?.strength.base &&"Strength : " + stats?.strength.base}</h1>
+                <h1>{stats?.agility.base && "Agility : " + stats?.agility.base}</h1>
+                <h1>{stats?.stamina.base &&"Stamina : " + stats?.stamina.base}</h1>
+                <h1>{stats?.intellect.base && "Intellect : " + stats?.intellect.base}</h1>
+              </div> */}
               </section>
               <section>
               <div className="charpagebg3" />
@@ -107,7 +114,7 @@ const CharPage = () => {
         </section>
         <section className="section2">
           <div className="charpagebg2" />
-          <div className="charpage__charimage">
+          <div className="section2__charimg">
             <img id='item' src={media?.assets[3].value}></img>
           </div>
         </section>
