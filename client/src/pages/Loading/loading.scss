@@ -1,0 +1,23 @@
+.loading{
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    z-index: 32132;
+    & img{
+        animation: glow 0.5s infinite alternate;
+    }
+}
+
+
+@keyframes glow {
+    from {
+        filter:drop-shadow(0 0 -70px #164f74);
+    }
+    to {
+        filter:drop-shadow(0 0 70px #164f74);
+
+    }
+  }

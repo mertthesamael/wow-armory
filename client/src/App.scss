@@ -6,3 +6,29 @@
   font-family: "Montserrat";
  
 }
+
+/* ===== Scrollbar CSS ===== */
+  /* Firefox */
+  * {
+    scrollbar-width: auto;
+    scrollbar-color: #d0ccd1 #ffffff;
+    scroll-behavior: smooth;
+
+  }
+
+  /* Chrome, Edge, and Safari */
+  *::-webkit-scrollbar {
+    width: 2px;
+  }
+
+  *::-webkit-scrollbar-track {
+    background: #ffffff00;
+  }
+
+  *::-webkit-scrollbar-thumb {
+    background-color: #f8f8f8;
+    border-radius: 10px;
+  }
+  body{
+ background-color: rgb(32, 32, 32);
+  }

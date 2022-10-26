@@ -6,14 +6,15 @@ import Alliance from "../../assets/4614381.jpg"
 import Horde from "../../assets/5271737.jpg"
 import axios from "axios"
 import { useGetApi } from "../../hooks/useGetApi"
-import Loading from "../../assets/loading-svgrepo-com.svg"
+import Loading from "../../pages/Loading/Loading"
 import { NavLink } from "react-router-dom"
 import Equipment from "../../components/Equipment/Equipment"
-import Carousel from "../../components/Carousel/Carousel"
+import Profession from "../../components/Profession/Profession"
 
 const CharPage = () => {
   
     const ctx = useContext(DataContext)
+    const [loadingImg, setIsLoadingImg] = useState()
     const getImg = async (src,type) => {
      await document.getElementById(type)?.setAttribute("src",Loading)
       const options = {
@@ -25,7 +26,8 @@ const CharPage = () => {
         }
       }
      
-     await axios.request(options).then(res=> document.getElementById(type).setAttribute("src", res.data.data))
+     
+     axios.request(options).then(res=> document.getElementById(type).setAttribute("src", res.data.data))
   
       
     } 
@@ -41,8 +43,10 @@ const CharPage = () => {
 
  useEffect(()=>{
   equip?.equipped_items.map(item => getImg(item.item.id, item.slot.type))
-  
- },[equip])
+  setTimeout(() => {
+    document.querySelector(".charpage").style.opacity=1
+  }, 1000);
+ },[equip,player])
  
  console.log(equip)
     const color = {
@@ -54,15 +58,14 @@ const CharPage = () => {
       LEGENDARY:"#ff8000"
     }
 
-      if(isLoading || playerLoading || equipLoading){
+      if(isLoading || playerLoading || equipLoading || loadingImg){
           return(
-              <h1>Loading</h1>
+              <Loading/>
           )
       }
 
     return (
       <div className="charpage">
-        <NavLink to='/' className="goback">HOME</NavLink>
         <Sidebar />
         <section className="section1">
           <div
@@ -71,14 +74,14 @@ const CharPage = () => {
           />
           <h1 className="charid">{player?.character.name}</h1>
         </section>
-        <section className="eqipments__section">
+        <section id='equipment' className="eqipments__section">
           <div className="charpagebg3" style={{backgroundImage:`url(${media?.assets[2].value})`}} />
           
           <div className="equipment">
           
            {equip?.equipped_items.map((item) => 
            
-                 <Equipment stats={item.stats} level={item.level.value} id={item.slot.type} name={item.name} color={color[item.quality.type]}/>
+                 <Equipment spells={item.spells} stats={item.stats} level={item.level.value} id={item.slot.type} name={item.name} color={color[item.quality.type]}/>
            
             
               )}
@@ -91,13 +94,14 @@ const CharPage = () => {
                 <h1>{stats?.intellect.base && "Intellect : " + stats?.intellect.base}</h1>
               </div> */}
               </section>
-              <section>
+              <section id='professions'>
               <div className="charpagebg3" />
               
               <div className="professions">
                 <div className="professions__primary">
                   <h1>Primary Professions</h1>
-                 {professions?.primaries?.map(name => <div key={name.profession.name} className="profession"><h1>{name.profession.name }</h1>{name.tiers.map(x=><h1>{x.tier.name + " : " + x.skill_points +"/"+ x.max_skill_points}</h1>)}</div>)}
+                  {professions?.primaries?.map(name => <Profession data={name}/>)}
+                 {/* {professions?.primaries?.map(name => <div key={name.profession.name} className="profession"><h1>{name.profession.name }</h1>{name.tiers.map(x=><h1>{x.tier.name + " : " + x.skill_points +"/"+ x.max_skill_points}</h1>)}</div>)} */}
                 </div>
                 {/* <div className="professions_ach">
                   <h1>Achievement Point:</h1>
@@ -106,7 +110,7 @@ const CharPage = () => {
                 <div className="professions__secondary">
                 <h1>Secondary Professions</h1>
 
-                {professions?.secondaries?.map(name => <div key={name.profession.name} className="profession"><h1>{name.profession.name + ":" + (name.skill_points?name.skill_points:"") }</h1>{name.tiers?.map(x=><h1>{x.tier.name + " : " + x.skill_points +"/"+ x.max_skill_points}</h1>)}</div>)}
+                {professions?.secondaries?.map(name => <Profession data={name}></Profession>)}
 
                 </div>
 

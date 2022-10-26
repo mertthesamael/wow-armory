@@ -1,11 +1,11 @@
 .equipmentitem{
     width:15rem;
-    height: 15rem;
+    min-height: 15rem;
+    height: max-content;
     z-index: 123;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
     padding: 1rem;
     border-radius: 15px;
     position: relative;
@@ -13,6 +13,9 @@
     cursor: default;
     backdrop-filter: blur(10px);
     margin: 1rem;
+    z-index: 23;
+    transition: all 0.5s ease-in-out;
+    zoom: 0.9;
     &__header{
         display: flex;
         justify-content: center;
@@ -31,6 +34,7 @@
     transition: all 0.5s ease-in-out;
     opacity: 0;
     right: -13rem;
+    z-index: 3212;
     background-color: black;
    }
     &__img{
@@ -54,5 +58,51 @@
         height: 100%;
         width: 100%;
         padding-top: 1rem;
+
+        &:hover{
+          
+        }
+
+        &__tooltip{
+            height: 100%;
+        width: 100%;
+        padding-top: 1rem;
+        }
     }
+}
+.equipmentitem__desc{
+    width:15rem;
+    min-height: 15rem;
+    height: max-content;
+    z-index: 123;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem;
+    border-radius: 15px;
+    position: relative;
+    transition: all 0.2s ease-in-out;
+    cursor: default;
+    backdrop-filter: blur(10px);
+    margin: 1rem;
+    z-index: 23;
+    transition: all 0.5s ease-in-out;
+    zoom: 0.9;
+
+    & .item__spell{
+        display: none;
+    }
+    &:hover{
+        background-color: black;
+        height: max-content;
+        font-weight: bolder;
+        & .item__stats{
+            display: none;
+        }
+
+        & .item__spell{
+            display: block;
+        }
+    }
+    
 }

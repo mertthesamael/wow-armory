@@ -4,8 +4,6 @@ import Home from './pages/Home/Home';
 import { DateContextWrapper } from './store/context';
 import {Routes, Route} from "react-router-dom"
 import CharPage from './pages/CharPage/CharPage';
-
-
 function App() {
 
     const client = new QueryClient
@@ -18,8 +16,11 @@ function App() {
       <div className="App">
 
         <Routes>
+          
+
           <Route path='/' element={<Home />}/>
         <Route path='/character' element={<CharPage/>}/>
+
 
         </Routes>
       </div>

@@ -5,10 +5,10 @@ const Sidebar = (props) => {
 
     return(
         <div className="sidebar">
-            <h1>Test</h1>
-            <h1>Test</h1>
-            <h1>Test</h1>
-            <h1>Test</h1>
+            <a href='#equipment'>Equipment</a>
+            <a href='#professions'>Professions</a>
+            <a href='#'>Test</a>
+            <a href='#'>Test</a>
         </div>
     )
 
