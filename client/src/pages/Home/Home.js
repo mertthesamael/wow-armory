@@ -1,8 +1,7 @@
 
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import { useNavigate, redirect } from "react-router-dom";
 import { DataContext } from "../../store/context";
-import axios from "axios"
 import "./home.scss"
 
 
@@ -16,7 +15,6 @@ const Home = (props) => {
       e.preventDefault()
       ctx.onSetName(e.target.name.value.toLowerCase())
       ctx.onSetRealm(e.target.realm.value.toLowerCase().replaceAll(" ","-"))
-
       navigate("/character")
     }
     const changeRegionUs = () => {

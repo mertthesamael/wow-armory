@@ -1,10 +1,13 @@
 .charpage{
     height: 100vh;
+    max-width: 100vw;
     scroll-snap-type: y mandatory;
-    overflow: auto;
     position: relative;
     transition: all 1s ease-in-out;
     opacity: 0;
+    overflow: auto;
+    overflow-x: hidden;
+
     & .charid{
         letter-spacing: 10px;
     }

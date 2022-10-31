@@ -52,13 +52,17 @@
         justify-content: space-between;
         text-shadow: 0 0 2px black;
 
+        & p {
+            font-size: 15px;
+        }
         
     }
     &__stats{
         height: 100%;
         width: 100%;
         padding-top: 1rem;
-
+        position: relative;
+       
         &:hover{
           
         }

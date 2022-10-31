@@ -7,14 +7,13 @@ import Horde from "../../assets/5271737.jpg"
 import axios from "axios"
 import { useGetApi } from "../../hooks/useGetApi"
 import Loading from "../../pages/Loading/Loading"
-import { NavLink } from "react-router-dom"
 import Equipment from "../../components/Equipment/Equipment"
 import Profession from "../../components/Profession/Profession"
 
+import { Fade } from "react-awesome-reveal";
 const CharPage = () => {
-  
-    const ctx = useContext(DataContext)
-    const [loadingImg, setIsLoadingImg] = useState()
+  const ctx = useContext(DataContext)
+  const [loadingImg, setIsLoadingImg] = useState()
     const getImg = async (src,type) => {
      await document.getElementById(type)?.setAttribute("src",Loading)
       const options = {
@@ -25,30 +24,31 @@ const CharPage = () => {
           region:ctx.region
         }
       }
-     
-     
-     axios.request(options).then(res=> document.getElementById(type).setAttribute("src", res.data.data))
-  
+      
+      
+      axios.request(options).then(res=> document.getElementById(type).setAttribute("src", res.data.data))
+      
       
     } 
   
     
- const {data:equip, isLoading:equipLoading} = useGetApi('equipment', ctx.realm,ctx.name,ctx.region)
- const {data:player, isLoading:playerLoading} = useGetApi('appearance', ctx.realm,ctx.name,ctx.region)
- const {data:media, isLoading} = useGetApi('character-media', ctx.realm,ctx.name,ctx.region)
- const {data:professions} = useGetApi('professions', ctx.realm,ctx.name,ctx.region)
+    const {data:equip, isLoading:equipLoading} = useGetApi('equipment', ctx.realm,ctx.name,ctx.region)
+    const {data:player, isLoading:playerLoading} = useGetApi('appearance', ctx.realm,ctx.name,ctx.region)
+    const {data:media, isLoading} = useGetApi('character-media', ctx.realm,ctx.name,ctx.region)
+    const {data:professions} = useGetApi('professions', ctx.realm,ctx.name,ctx.region)
 //  const {data:ach, isLoading:achLoading} = useGetApi('achievements', ctx.realm,ctx.name,ctx.region)
- const {data:stats, isLoading:statsLoading} = useGetApi('statistics', ctx.realm,ctx.name,ctx.region)
+const {data:stats, isLoading:statsLoading} = useGetApi('statistics', ctx.realm,ctx.name,ctx.region)
 
 
- useEffect(()=>{
+
+useEffect(()=>{
   equip?.equipped_items.map(item => getImg(item.item.id, item.slot.type))
   setTimeout(() => {
     document.querySelector(".charpage").style.opacity=1
-  }, 1000);
+   
+  }, 2000);
  },[equip,player])
  
- console.log(equip)
     const color = {
       RARE:'#0070dd',
       HEIRLOOM:'#00ccff',
@@ -63,11 +63,12 @@ const CharPage = () => {
               <Loading/>
           )
       }
-
+      
     return (
-      <div className="charpage">
+      <div  className="charpage">
         <Sidebar />
-        <section className="section1">
+        <section  className="section1">
+          
           <div
             style={player?.faction.name ==='Horde'?{ backgroundImage: `url(${Horde})` }:{ backgroundImage: `url(${Alliance})` }}
             className="charpagebg"
@@ -76,15 +77,15 @@ const CharPage = () => {
         </section>
         <section id='equipment' className="eqipments__section">
           <div className="charpagebg3" style={{backgroundImage:`url(${media?.assets[2].value})`}} />
-          
-          <div className="equipment">
+
+          <div  className="equipment">
           
            {equip?.equipped_items.map((item) => 
            
-                 <Equipment spells={item.spells} stats={item.stats} level={item.level.value} id={item.slot.type} name={item.name} color={color[item.quality.type]}/>
+           <Equipment   spells={item.spells} stats={item.stats} level={item.level.value} id={item.slot.type} name={item.name} color={color[item.quality.type]}/>
            
-            
-              )}
+           
+           )}
               </div>
               {/* <div className="stats">
                 <h1>Primary Stats</h1>
@@ -97,7 +98,8 @@ const CharPage = () => {
               <section id='professions'>
               <div className="charpagebg3" />
               
-              <div className="professions">
+              <div  className="professions">
+              
                 <div className="professions__primary">
                   <h1>Primary Professions</h1>
                   {professions?.primaries?.map(name => <Profession data={name}/>)}
@@ -109,8 +111,8 @@ const CharPage = () => {
                 </div> */}
                 <div className="professions__secondary">
                 <h1>Secondary Professions</h1>
-
-                {professions?.secondaries?.map(name => <Profession data={name}></Profession>)}
+                
+                {professions?.secondaries?.map(name => <Fade direction='up'><Profession data={name}></Profession></Fade>)}
 
                 </div>
 

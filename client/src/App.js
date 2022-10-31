@@ -4,6 +4,9 @@ import Home from './pages/Home/Home';
 import { DateContextWrapper } from './store/context';
 import {Routes, Route} from "react-router-dom"
 import CharPage from './pages/CharPage/CharPage';
+
+
+import { useEffect } from 'react';
 function App() {
 
     const client = new QueryClient
